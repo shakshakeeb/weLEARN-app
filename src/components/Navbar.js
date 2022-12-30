@@ -29,7 +29,7 @@ function Navbar() {
                  </li>
                  <li className='nav-item'>
                     <Link to='/chat' className='nav-links' onClick={closeMobileMenu}>
-                        Chat
+                        Chatroom hub
                     </Link>
                  </li>
                  <li className='nav-item'>
