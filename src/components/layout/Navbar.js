@@ -55,6 +55,8 @@ import { PROFILE } from "../../lib/routes";
 
 import { Link as RouterLink } from "react-router-dom";
 import { useLogout } from "../../hooks/auth";
+import { useLogin } from "../../hooks/auth";
+import Login from "../auth/Login";
 
 export default function Navbar() {
   const { logout, isLoading } = useLogout();
@@ -64,41 +66,49 @@ export default function Navbar() {
       shadow="sm"
       pos="fixed"
       width="full"
-      borderTop="6px solid"
-      borderTopColor="teal.400"
-      height="16"
+      borderTopColor="blackAlpha"
+      height="20"
       zIndex="3"
-      justify="center"
-      bg="white"
+      justifyContent="center"
+      bg="yellow.400"
     >
       <Flex px="4" w="full" align="center" maxW="1200px">
-        <Link color="blue" as={RouterLink} to={HOME} fontWeight="bold">
+        <Link color="blackAlpha" as={RouterLink} to={HOME} fontWeight="bold">
           Home
         </Link>
 
         <Flex px="4" w="full" align="center" maxW="100px"></Flex>
-        <Link color="red" as={RouterLink} to={FORUM} fontWeight="bold">
+        <Link color="blackAlpha" as={RouterLink} to={FORUM} fontWeight="bold">
           Forum
         </Link>
 
         <Flex px="4" w="full" align="center" maxW="100px"></Flex>
-        <Link color="teal" as={RouterLink} to={CHATROOM} fontWeight="bold">
+        <Link color="blackAlpha" as={RouterLink} to={CHATROOM} fontWeight="bold">
           Chatroom
         </Link>
 
         <Flex px="4" w="full" align="center" maxW="100px"></Flex>
-        <Link color="green" as={RouterLink} to={PROFILE} fontWeight="bold">
+        <Link color="blackAlpha" as={RouterLink} to={PROFILE} fontWeight="bold">
           Profile
         </Link>
         <Button
           ml="auto"
-          colorScheme="teal"
+          colorScheme="blackAlpha"
           size="sm"
           onClick={logout}
           isLoading={isLoading}
         >
           Logout
         </Button>
+        {/* <Button
+          ml="auto"
+          colorScheme="blackAlpha"
+          size="sm"
+          onClick={Login}
+          isLoading={isLoading}
+        >
+          Login
+        </Button> */}
       </Flex>
     </Flex>
   );

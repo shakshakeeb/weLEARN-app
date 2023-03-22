@@ -1,11 +1,11 @@
 import { Box, Center, FormControl, FormErrorMessage, FormLabel, Heading, Input, Button, Text, Link } from "@chakra-ui/react"; 
 import { HOME, REGISTER } from "../../lib/routes";
 import { Link as RouterLink} from "react-router-dom";
-import { useLogin } from "../../hooks/auth";
+import { useLogin, useGoogle } from "../../hooks/auth";
 import { useForm } from "react-hook-form";
 import { emailValidate, passwordValidate } from "../../utils/form-validate";
 import { FcGoogle } from "react-icons/fc";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+
 
 
 export default function Login() {
@@ -19,13 +19,16 @@ export default function Login() {
         }
 
     }
-    
+    //remember for report -->
+    //error handler for react hook forms error. if there is more than one react/dom in my project false is printed to console to display whether this is true
+    //this was the case. had to npm dedupe to be able to run project.
     require('react-dom');
     window.React2 = require('react');
     console.log(window.React1 === window.React2);
 
     return (
         <Center w='100%' h="100vh">
+            <Text>weLEARN</Text>
             <Box mx="1" maxW="md" p="9" borderWidth="1px" borderRadius="lg">
                 <Heading mb="4" size="lg" textAlign="center">
                     Log in
@@ -45,7 +48,7 @@ export default function Login() {
                     <Button
                     mt="4"
                     type="submit"
-                    colorScheme="blue"
+                    colorScheme="yellow"
                     size="md"
                     w="full"
                     isLoading={isLoading}
@@ -53,7 +56,7 @@ export default function Login() {
                     >
                         Log in 
                         </Button>
-                <Button onClick={login}
+                <Button onClick={useGoogle}
                   mt="4"
                   type="submit"
                   colorScheme="blackAlpha"

@@ -11,6 +11,7 @@ import {
   import { setDoc, doc, getDoc } from "firebase/firestore";
   import usernameExist from "../utils/usernameExist";
   import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+
   
   export function useAuth() {
     const [authUser, authLoading, error] = useAuthState(auth);
@@ -36,11 +37,52 @@ import {
     return { user, isLoading, error };
   }
   
-  export function useLogin() {
+
+  export function useGoogle() {
     const [isLoading, setLoading] = useState(false);
     const toast = useToast();
     const navigate = useNavigate();
     const googleProvider = new GoogleAuthProvider();
+
+
+    const googLogin = async (redirectTo = HOME) => {
+     try{
+       const result = await signInWithPopup(auth, googleProvider);
+       console.log(result.user);
+       toast({
+         title: "You are logged in",
+         status: "success",
+         isClosable: true,
+         position: "top",
+         duration: 5000,
+       });
+       //redirect user to home page if sign in is succesful
+       navigate(redirectTo);
+       //else catch error toast displays logging in failed
+     } catch (error) {
+       toast({
+         title: "Logging in failed",
+         description: error.message,
+         status: "error",
+         isClosable: true,
+         position: "top",
+         duration: 5000,
+       });
+       //loading to false to redisplay button so loading state is not forever
+       setLoading(false);
+     } finally {
+       setLoading(false);
+     }
+   }
+   return { googLogin, isLoading };
+  }
+
+
+
+  export function useLogin() {
+    const [isLoading, setLoading] = useState(false);
+    const toast = useToast();
+    const navigate = useNavigate();
 
   
     async function login({ email, password, redirectTo = HOME }) {
@@ -139,23 +181,39 @@ import {
     return { register, isLoading };
   }
   
-  export function useLogout() {
-    const [signOut, isLoading, error] = useSignOut(auth);
-    const toast = useToast();
-    const navigate = useNavigate();
+// This function uses the Firebase SDK to handle user logout
+export function useLogout() {
+  // Get the signOut function from the Firebase auth API, as well as isLoading and error state
+  const [signOut, isLoading, error] = useSignOut(auth);
   
-    async function logout() {
-      if (await signOut()) {
-        toast({
-          title: "Successfully logged out",
-          status: "success",
-          isClosable: true,
-          position: "top",
-          duration: 5000,
-        });
-        navigate(LOGIN);
-      } // else: show error [signOut() returns false if failed]
+  // Use the useToast and useNavigate hooks from the Chakra UI library
+  const toast = useToast();
+  const navigate = useNavigate();
+  
+  // Define an async logout function that calls signOut and shows a toast notification upon successful logout
+  async function logout() {
+    if (await signOut()) {
+      toast({
+        title: "Successfully logged out",
+        status: "success",
+        isClosable: true,
+        position: "top",
+        duration: 5000,
+      });
+      navigate(LOGIN);
+    } else {
+      // If signOut fails, show an error message
+      // Note that this code path will not be reached if an error is thrown (e.g. due to network issues)
+      toast({
+        title: "Failed to log out",
+        status: "error",
+        isClosable: true,
+        position: "top",
+        duration: 5000,
+      });
     }
-  
-    return { logout, isLoading };
   }
+  
+  // Return an object with the logout function and isLoading state
+  return { logout, isLoading };
+}
