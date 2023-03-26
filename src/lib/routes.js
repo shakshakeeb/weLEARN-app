@@ -7,6 +7,8 @@ import Forum from "../components/pages/forum/index";
 import Chatroom from "../components/pages/chatroom/index";
 import Comments from "../components/pages/comments/index";
 import User from "../components/users/index";
+import Profile from "../components/pages/profile";
+
 
 
 //test use without root -------------------------------->
@@ -56,7 +58,7 @@ export const router = createBrowserRouter([
         },
         {
             path: PROFILE,
-            element: "Profile",
+            element: <Profile />,
         },
         {
             path: COMMENTS,

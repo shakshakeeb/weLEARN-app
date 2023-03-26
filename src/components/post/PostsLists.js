@@ -8,7 +8,7 @@ export default function PostsLists({ posts }) {
     <Box px="4" align="center" >
       {posts?.length === 0 ? ( 
         <Text textAlign="center" fontSize="xl">
-          No posts yet...
+          Empty ... why don't you say something?
         </Text>
          ) : ( 
           posts?.map((post)=> <Post key={post.id} post={post} />)

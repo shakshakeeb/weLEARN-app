@@ -47,7 +47,7 @@
 // export default Navbar
 
 
-import { Button, Flex, Link } from "@chakra-ui/react";
+import { Button, Flex, Link, extendTheme, useColorMode, IconButton } from "@chakra-ui/react";
 import { HOME } from "../../lib/routes";
 import { FORUM } from "../../lib/routes";
 import { CHATROOM } from "../../lib/routes";
@@ -58,19 +58,31 @@ import { useLogout } from "../../hooks/auth";
 import { useLogin } from "../../hooks/auth";
 import Login from "../auth/Login";
 
+import { CiDark } from "react-icons/ci";
+
 export default function Navbar() {
   const { logout, isLoading } = useLogout();
+  
 
+  const config = {
+    initialColorMode: 'light',
+    useSystemColorMode: false,
+  }
+
+  const theme = extendTheme({ config })
+
+  const { colorMode, toggleColorMode } = useColorMode()
   return (
     <Flex
       shadow="sm"
-      pos="fixed"
+      textAlign="center"
       width="full"
       borderTopColor="blackAlpha"
       height="20"
       zIndex="3"
       justifyContent="center"
-      bg="yellow.400"
+
+      bgGradient='linear(to-r, green.200, pink.500)'
     >
       <Flex px="4" w="full" align="center" maxW="1200px">
         <Link color="blackAlpha" as={RouterLink} to={HOME} fontWeight="bold">
@@ -100,6 +112,14 @@ export default function Navbar() {
         >
           Logout
         </Button>
+        <IconButton 
+        icon={< CiDark />}
+        variant="ghost"
+        onClick={toggleColorMode}>
+        {colorMode === 'light' ? 'Dark' : 'Light'}
+         
+
+      </IconButton>
         {/* <Button
           ml="auto"
           colorScheme="blackAlpha"

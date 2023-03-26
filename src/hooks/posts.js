@@ -1,7 +1,8 @@
 import { uuidv4 } from "@firebase/util";
 import { useState } from "react";
 import { db } from "../lib/firebase";
-import { doc, setDoc, getDoc, query, collection, orderBy, where, updateDoc, arrayRemove, arrayUnion } from "firebase/firestore";
+import { doc, setDoc, getDocs, query, collection, orderBy, where, updateDoc, arrayRemove, arrayUnion, deleteDoc
+ } from "firebase/firestore";
 import { useCollectionData, useDocumentData } from "react-firebase-hooks/firestore";
 import { useToast } from "@chakra-ui/react";
 
@@ -95,8 +96,32 @@ export function usePosts() {
 
   export function useRemovePost(id){
     const [isLoading, setLoading ] = useState(false);
+    const toast = useToast();
 
     async function removePost(){
+        const res = window.confirm("Are you sure you want to delete this post?");
+
+    if (res) {
+      setLoading(true);
+
+      // Delete post document
+      await deleteDoc(doc(db, "posts", id));
+
+      // Delete comments
+      const q = query(collection(db, "comments"), where("postID", "==", id));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach(async (doc) => deleteDoc(doc.ref));
+
+      toast({
+        title: "Post deleted!",
+        status: "info",
+        isClosable: true,
+        position: "top",
+        duration: 5000,
+      });
+
+      setLoading(false);
+    }
 
     }
 

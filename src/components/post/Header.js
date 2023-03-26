@@ -14,16 +14,16 @@ export default function Header({ uid, date }) {
     borderBottom="2px solid"
     borderColor="blackAlpha"
     p="3"
-    bg="gray.50"
+    bgGradient='linear(to-r, pink.100, pink.500)'
     >
         <Avatar user={user} size="md" />
 
-        <Box ml="4">
+        <Box ml="4" >
             <Travel user={user} />
             <Button colorScheme="blackAlpha" variant="link">
               
             </Button>
-            <Text fontSize="sm" color="blackAlpha">
+            <Text fontSize="sm" color="black">
                 {formatDistanceToNow(date)} ago
             </Text>
         </Box>

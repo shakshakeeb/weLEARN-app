@@ -21,15 +21,15 @@ export default function Layout() {
     if(isLoading) return "Loading...";
 
 
-
     return (
-        <>
+      <>
         <Navbar />
-        <Flex pt="16" pb="12" mx="auto" w="full" maxW="1200px">
-          <Box w="900px">
+        <Flex pt="16" pb="12" mx="auto" w="full">
+          <Box w="100%"  minH="100vh">
             <Outlet />
           </Box>
         </Flex>
       </>
     );
+    
 }

@@ -1,4 +1,4 @@
-import { Box, Button, Heading, HStack, Textarea } from "@chakra-ui/react";
+import { Box, Button, Heading, HStack, Stack, Textarea, Container } from "@chakra-ui/react";
 import reactTextareaAutosize from "react-textarea-autosize";
 import { useForm } from "react-hook-form";
 import { useAddPost } from "../../../hooks/posts";
@@ -24,18 +24,25 @@ function NewPost(){
             reset();
         }
 
-    return <Box justify="center"  maxW="800px" mx="100" py="20">
-    <form onSubmit={handleSubmit(handleAddPost)}>
-        <HStack justify="space-between" backgroundColor="">
-            <Heading size="lg" paddingLeft="300">Post something !</Heading>
-            {/* if button is loading in loading state, or adding post is true */}
-            <Button colorScheme="yellow" type="submit" isLoading={authLoading || addingPost} loadingText="Loading">
-                Post
-            </Button>
-        </HStack>
-        <Textarea as={reactTextareaAutosize} resize="none" mt="5" placeholder="Create a new post..." {...register("text", {required: true})}/>
-    </form>
-</Box>
+    return ( 
+        
+        
+
+        <Container>
+        <Box justify="center"  maxW="1200px" mx="100" py="20" textAlign="center">
+        <form onSubmit={handleSubmit(handleAddPost)}>
+            <Stack justify="space-between">
+                <Heading size="sm" >Post something !</Heading>
+                {/* if button is loading in loading state, or adding post is true */}
+                <Button colorScheme="" type="submit" bgColor="green.200" isLoading={authLoading || addingPost} loadingText="Loading">
+                    Post
+                </Button>
+            </Stack>
+            <Textarea as={reactTextareaAutosize} resize="none" mt="5" placeholder="Create a new post..." {...register("text", {required: true})}/>
+        </form>
+    </Box>
+    </Container>
+    );
 }
 
 export default function Forum() {
