@@ -13,29 +13,29 @@ import {
   import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
   
-  export function useAuth() {
-    const [authUser, authLoading, error] = useAuthState(auth);
-    const [isLoading, setLoading] = useState(true);
-    const [user, setUser] = useState(null);
-  
+export function useAuth() {
+  const [authUser, authLoading, error] = useAuthState(auth); // Custom hook `useAuthState` is called with `auth` as an argument and returns `authUser`, `authLoading`, and `error` values.
+  const [isLoading, setLoading] = useState(true); // State hook to track loading status, initialized to `true`.
+  const [user, setUser] = useState(null); // State hook to store user data, initialized to `null`.
 
-    useEffect(() => {
-      async function fetchData() {
-        setLoading(true);
-        const ref = doc(db, "users", authUser.uid);
-        const docSnap = await getDoc(ref);
-        setUser(docSnap.data());
-        setLoading(false);
-      }
-  
-      if (!authLoading) {
-        if (authUser) fetchData();
-        else setLoading(false); // Not signed in
-      }
-    }, [authLoading]);
-  
-    return { user, isLoading, error };
-  }
+  useEffect(() => {
+    async function fetchData() {
+      setLoading(true); // Set loading status to `true` before fetching data.
+      const ref = doc(db, "users", authUser.uid); // Create a reference to a document in Firestore using `db` and `authUser.uid`.
+      const docSnap = await getDoc(ref); // Fetch the document snapshot from Firestore.
+      setUser(docSnap.data()); // Set the user data from the document snapshot.
+      setLoading(false); // Set loading status to `false` after fetching data.
+    }
+
+    if (!authLoading) {
+      if (authUser) fetchData(); // If `authLoading` is `false` and `authUser` exists, fetch user data.
+      else setLoading(false); // If not signed in, set loading status to `false`.
+    }
+  }, [authLoading]); // Only run this effect when `authLoading` changes.
+
+  return { user, isLoading, error }; // Return the `user` data, `isLoading` status, and `error` value as an object.
+}
+
   
 
   export function useGoogle() {
@@ -79,49 +79,64 @@ import {
 
 
 
-  export function useLogin() {
-    const [isLoading, setLoading] = useState(false);
-    const toast = useToast();
-    const navigate = useNavigate();
+// Define a custom hook 'useLogin' for handling login functionality
+export function useLogin() {
+  // Initialize state for 'isLoading' and 'setLoading' using the 'useState' hook
+  const [isLoading, setLoading] = useState(false);
+  
+  // Access the 'toast' and 'navigate' functions from other hooks
+  const toast = useToast();
+  const navigate = useNavigate();
 
-  
-    async function login({ email, password, redirectTo = HOME }) {
-      setLoading(true);
-  
-      try {
-        await signInWithEmailAndPassword(auth, email, password);
-        toast({
-          title: "You are logged in",
-          status: "success",
-          isClosable: true,
-          position: "top",
-          duration: 5000,
-        });
-        navigate(redirectTo);
-      } catch (error) {
-        toast({
-          title: "Logging in failed",
-          description: error.message,
-          status: "error",
-          isClosable: true,
-          position: "top",
-          duration: 5000,
-        });
-        setLoading(false);
-      } finally {
-        setLoading(false);
-      }
+  // Define an asynchronous function 'login' for logging in with email and password
+  async function login({ email, password, redirectTo = HOME }) {
+    // Set 'isLoading' state to true to indicate that login process has started
+    setLoading(true);
+
+    try {
+      // Call the 'signInWithEmailAndPassword' function with the provided 'email' and 'password'
+      await signInWithEmailAndPassword(auth, email, password);
+
+      // Show a success toast notification
+      toast({
+        title: "You are logged in",
+        status: "success",
+        isClosable: true,
+        position: "top",
+        duration: 4000,
+      });
+
+      // Navigate to the specified 'redirectTo' path
+      navigate(redirectTo);
+    } catch (error) {
+      // Show an error toast notification
+      toast({
+        title: "Logging in failed",
+        description: error.message,
+        status: "error",
+        isClosable: true,
+        position: "top",
+        duration: 4000,
+      });
+
+      // Set 'isLoading' state to false to indicate that login has failed
+      setLoading(false);
+    } finally {
+      // Set 'isLoading' state to false to indicate that login works
+      setLoading(false);
     }
-  
-    return { login, isLoading };
   }
+
+  // Return the 'login' function and 'isLoading' state as an object from the custom hook
+  return { login, isLoading };
+}
 
 
   
   export function useRegister() {
-    const [isLoading, setLoading] = useState(false);
-    const toast = useToast();
-    const navigate = useNavigate();
+    const [isLoading, setLoading] = useState(false); // State hook to track loading status, initialized to `false`.
+    const toast = useToast(); // Custom hook `useToast` for displaying toast messages.
+    const navigate = useNavigate(); // Custom hook `useNavigate` for navigation.
   
     async function register({
       username,
@@ -129,57 +144,63 @@ import {
       password,
       redirectTo = HOME,
     }) {
-      setLoading(true);
+      setLoading(true); // Set loading status to `true` before starting registration process.
   
-      const usernameExists = await usernameExist(username);
+      const usernameExists = await usernameExist(username); // Call a function `usernameExist` to check if the provided username already exists.
   
       if (usernameExists) {
+        // If username already exists, display an error toast and set loading status to `false`.
         toast({
           title: "Username already exists",
           status: "error",
           isClosable: true,
           position: "top",
-          duration: 5000,
+          duration: 4000,
         });
         setLoading(false);
       } else {
         try {
+          // If username is available, attempt to create a new user account with the provided email and password.
           const res = await createUserWithEmailAndPassword(auth, email, password);
   
+          // Create a new document in Firestore with user data (id, username, avatar, date, bio).
           await setDoc(doc(db, "users", res.user.uid), {
             id: res.user.uid,
             username: username.toLowerCase(),
             avatar: "",
             date: Date.now(),
+            bio: "",
           });
   
+          // Display a success toast for account creation, navigate to the provided `redirectTo` page.
           toast({
             title: "Account created",
             description: "You are logged in",
             status: "success",
             isClosable: true,
             position: "top",
-            duration: 5000,
+            duration: 4000,
           });
-  
           navigate(redirectTo);
         } catch (error) {
+          // If account creation fails, display an error toast with the error message.
           toast({
             title: "Signing Up failed",
             description: error.message,
             status: "error",
             isClosable: true,
             position: "top",
-            duration: 5000,
+            duration: 4000,
           });
         } finally {
-          setLoading(false);
+          setLoading(false); // Set loading status to `false` after the registration process completes.
         }
       }
     }
   
-    return { register, isLoading };
+    return { register, isLoading }; // Return the `register` function and `isLoading` status as an object.
   }
+  
   
 // This function uses the Firebase SDK to handle user logout
 export function useLogout() {
@@ -198,7 +219,7 @@ export function useLogout() {
         status: "success",
         isClosable: true,
         position: "top",
-        duration: 5000,
+        duration: 4000,
       });
       navigate(LOGIN);
     } else {
@@ -209,7 +230,7 @@ export function useLogout() {
         status: "error",
         isClosable: true,
         position: "top",
-        duration: 5000,
+        duration: 4000,
       });
     }
   }
@@ -217,3 +238,9 @@ export function useLogout() {
   // Return an object with the logout function and isLoading state
   return { logout, isLoading };
 }
+
+
+
+
+
+

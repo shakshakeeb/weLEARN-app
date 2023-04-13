@@ -9,16 +9,25 @@ import { FcGoogle } from "react-icons/fc";
 
 
 export default function Login() {
-    const { login, isLoading} = useLogin();
-    const {register, handleSubmit, reset, formState: { errors }, } = useForm();
+// Grab the 'login' and 'isLoading' variables from the 'useLogin()' hook
+const { login, isLoading } = useLogin();
 
-    async function handleSignIn(data){
-        const success = await login({email: data.email, password: data.password, redirectTo: HOME,});
-        if(success){
-            reset();
-        }
+// Get the 'register', 'handleSubmit', 'reset', and 'errors' variables from the 'useForm()' hook
+const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
+// Create an async function 'handleSignIn' to handle form submission
+async function handleSignIn(data) {
+    // Call the 'login' function with the email, password, and 'HOME' properties from the 'data' object,
+    // and store the result in the 'success' variable after waiting for the promise to resolve
+    const success = await login({ email: data.email, password: data.password, redirectTo: HOME });
+
+    // If 'success' is truthy (e.g., login was successful)
+    if (success) {
+        // Reset the form fields using the 'reset' function
+        reset();
     }
+}
+
     //remember for report -->
     //error handler for react hook forms error. if there is more than one react/dom in my project false is printed to console to display whether this is true
     //this was the case. had to npm dedupe to be able to run project.
@@ -27,8 +36,21 @@ export default function Login() {
     console.log(window.React1 === window.React2);
 
     return (
+        
         <Center w='100%' h="100vh">
-            <Text>weLEARN</Text>
+            <Text
+            fontWeight={600}
+            fontSize={{ base: '2xl', sm: '4xl', md: '6xl' }}
+            lineHeight={'110%'}
+            paddingRight={10}
+            >
+            weLEARN <br/> 
+            <Text as={'span'} color={'green.200'}>
+            Learning app
+            </Text>
+
+            </Text>
+            
             <Box mx="1" maxW="md" p="9" borderWidth="1px" borderRadius="lg">
                 <Heading mb="4" size="lg" textAlign="center">
                     Log in
@@ -59,7 +81,6 @@ export default function Login() {
                 <Button onClick={useGoogle}
                   mt="4"
                   type="submit"
-                  colorScheme="blackAlpha"
                   size="md"
                   w="full"
                   loadingText="Signing Up">Sign in with Google
@@ -75,8 +96,8 @@ export default function Login() {
                         colorScheme="blue"
                         size="md"
                         w="full"
-                        textDecor="underline"
-                        _hover={{ background: "teal.100" }}
+        
+                        _hover={{ background: "green.200" }}
                     >
                         Sign up
                     </Link>{" "}

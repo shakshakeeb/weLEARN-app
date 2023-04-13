@@ -7,7 +7,7 @@ import Forum from "../components/pages/forum/index";
 import Chatroom from "../components/pages/chatroom/index";
 import Comments from "../components/pages/comments/index";
 import User from "../components/users/index";
-import Profile from "../components/pages/profile";
+import Profile from "../components/pages/profile/index";
 
 
 
@@ -64,10 +64,10 @@ export const router = createBrowserRouter([
             path: COMMENTS,
             element: <Comments />,
         },
-        {
-            path: USER,
-            element: <User />,
-          },
+        // {
+        //     path: USER,
+        //     element: <User />,
+        //   },
     ],
  }, 
 ]);

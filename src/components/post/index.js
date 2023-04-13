@@ -12,7 +12,7 @@ export default function Post({post}) {
           <Header uid={uid} date={date} />
   
           <Box p="2" minH="100px">
-            <Text wordBreak="break-word" fontSize="md" backgroundColor="orange" fontWeight="black" >
+            <Text wordBreak="break-word" fontSize="md" fontWeight="black" >
                 {text}
             </Text>
           </Box>

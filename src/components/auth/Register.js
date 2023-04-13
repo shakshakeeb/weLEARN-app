@@ -78,7 +78,7 @@
             <Button
               mt="4"
               type="submit"
-              colorScheme="teal"
+              color="green.200"
               size="md"
               w="full"
               isLoading={isLoading}
@@ -93,17 +93,16 @@
             <Link
               as={RouterLink}
               to={LOGIN}
-              color="teal.800"
               fontWeight="medium"
               textDecor="underline"
-              _hover={{ background: "teal.100" }}
+              _hover={{ background: "" }}
             >
               Log In
             </Link>{" "}   
             <Button
                   mt="4"
                   type="submit"
-                  colorScheme="blackAlpha"
+                  color="green.200"
                   size="md"
                   w="full"
                   loadingText="Signing Up">Sign in with Google

@@ -8,30 +8,35 @@ import { doc, where, orderBy, collection, query, deleteDoc } from "firebase/fire
 
 
 
+// takes in an object with two properties postID and uid.
 export default function useAddComment({postID, uid}) {
-    const [ isLoading, setLoading ] = useState(false);
-    const toast = useToast();
+  const [ isLoading, setLoading ] = useState(false); // isLoading state manage loading status
+  const toast = useToast(); // toast notification 
 
-    async function addComment(text){
-        setLoading(true);
-        const date = Date.now();
-        const id = uuidv4();
-        const docRef = doc(db, "comments", id)
-        await setDoc(docRef, { text, id, postID, date, uid});
+  // asynchronous function that adds a comment to the database
+  async function addComment(text){
+      setLoading(true); // Set isLoading to true 
+      const date = Date.now(); // Get the current timestamp
+      const id = uuidv4(); // Generate a unique ID 
+      const docRef = doc(db, "comments", id); // Create Firestore document ref with comments collection, and generated ID
+      await setDoc(docRef, { text, id, postID, date, uid}); // Set document data with the provided text, generated ID, postID, timestamp, and uid
 
-        toast({
-            title: "Comment added",
-            status: "success",
-            isClosable: true,
-            position: "top",
-            duration: 5000
-        })
+      // Show a success toast notification
+      toast({
+          title: "Comment added",
+          status: "success",
+          isClosable: true,
+          position: "top",
+          duration: 4000
+      });
 
-        setLoading(false);
-    }
+      setLoading(false); // Set isLoading to false to indicate that the op is complete
+  }
 
-    return {addComment, isLoading}
+  // Return the addComment function and isLoading state to be used by the caller of this hook
+  return {addComment, isLoading}
 }
+
 
 
 export function useComments(postID){
@@ -61,7 +66,7 @@ export function useDeleteComment(id) {
           status: "info",
           isClosable: true,
           position: "top",
-          duration: 5000,
+          duration: 4000,
         });
         setLoading(false);
       }

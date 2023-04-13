@@ -109,7 +109,7 @@ export default function Interactions({post}) {
         variant="ghost"
         icon={<MdDelete />}
         />
-        )};
+        )}
       </Flex>
     );
   }

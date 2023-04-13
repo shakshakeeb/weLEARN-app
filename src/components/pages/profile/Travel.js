@@ -7,7 +7,7 @@ export default function Travel({ user }) {
     <Button
       as={Link}
       to={`${PROTECTED}/profile/${user.id}`}
-      colorScheme="teal"
+      colorScheme="black"
       variant="link"
     >
       {user.username}

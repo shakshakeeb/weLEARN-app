@@ -41,9 +41,11 @@ export function useAddPost() {
 
 
 // This function uses Firebase Firestore to fetch all posts from the "posts" collection
-export function usePosts() {
+export function usePosts(uid = null) {
     // Create a query object for the "posts" collection
-    const q = query(collection(db, "posts"), orderBy('date', 'desc'));
+    const q = uid ? query(collection(db, "posts"), 
+    orderBy('date', 'desc'), where("uid", "==", uid)): 
+    query(collection(db, "posts"), orderBy("date", "desc"));
     
     // Use the useCollectionData hook from the Firebase SDK to get the posts data, as well as isLoading and error state
     const [posts, isLoading, error] = useCollectionData(q);
@@ -56,22 +58,23 @@ export function usePosts() {
   }
   
 
-  export function useToggle({id, isLiked, uid}){
-    const [isLoading, setLoading] = useState(false);
+  export function useToggle({id, isLiked, uid}) {
+    const [isLoading, setLoading] = useState(false); // State to track whether the update operation is currently loading
 
-    async function toggle() {
-      setLoading(true);
-      const docRef = doc(db, "posts", id);
-      await updateDoc(docRef, {
-        likes: isLiked ? arrayRemove(uid) : arrayUnion(uid),
-
-      });
-      setLoading(false);
+    async function toggle() { // Async function that toggles the like status
+        setLoading(true); // Set loading state to true to indicate that the update operation is in progress
+        const docRef = doc(db, "posts", id); // Reference to the Firestore document to be updated
+        await updateDoc(docRef, {
+            likes: isLiked ? arrayRemove(uid) : arrayUnion(uid), // Update the 'likes' field of the document based on the current like status (add or remove 'uid' from the array)
+        });
+        setLoading(false); // Set loading state to false to indicate that the update operation is complete
     }
-  
-    return { toggle, isLoading };
 
-  }
+    return { toggle, isLoading }; // Return the toggle function and isLoading state to be used in the consuming component
+}
+
+
+
   export function useToggleDownvote({id, isDisliked, uid}){
     const [isLoading, setLoading] = useState(false);
 
@@ -87,11 +90,14 @@ export function usePosts() {
     return { toggleDownvote, isLoading };
 
   }
-  export function usePost(id){
-    const q = doc(db, "posts", id);
-    const [ post, isLoading ] = useDocumentData(q);
-    return { post, isLoading};
-  }
+  
+  export function usePost(id) {
+    const q = doc(db, "posts", id); // Reference to the Firestore document with the provided ID
+    const [post, isLoading] = useDocumentData(q); // Fetch the post document data using the useDocumentData hook from the Firebase SDK, and track the loading state
+    
+    return { post, isLoading }; // Return the post document data and isLoading state to be used in the consuming component
+}
+
 
 
   export function useRemovePost(id){

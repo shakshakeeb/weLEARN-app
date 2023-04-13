@@ -1,18 +1,25 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Box,
-  Button,
   Flex,
   Heading,
   Input,
   InputGroup,
   InputRightElement,
+  Button,
   Text,
 } from "@chakra-ui/react";
+import { useAddMessage } from "../../../hooks/chats";
+import { useAuth } from "../../../hooks/auth";
 
-const Chat = () => {
+export default function Chatroom() {
+  
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
+  const [senderName, setSenderName] = useState("");
+  const { addMessage, isLoading } = useAddMessage();
+  const { user, isLoading: authLoading } = useAuth(); //current user object
+  
 
   const handleMessageChange = (event) => {
     setMessage(event.target.value);
@@ -20,26 +27,28 @@ const Chat = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setMessages([...messages, message]);
-    setMessage("");
+    if (message.trim() === "") return;
+    const newMessage = { content: message, sender: senderName };
+    addMessage(newMessage)
+      .then(() => {
+        setMessages([...messages, newMessage]);
+        setMessage("");
+      })
+      .catch((error) => console.error(error));
   };
 
   return (
-    <Box w="100%" h="100%" bg="gray.100" margin="20px" >
-      <Flex
-        justify="center"
-        align="center"
-        h="10vh"
-        bg="blue.300"
-        color="white"
-      >
+    <Box w="100%" h="100%" bg="gray.100" margin="20px">
+      <Flex justify="center" align="center" h="10vh" bg="blue.300" color="white">
         <Heading as="h1" size="xl">
           Chatroom
         </Heading>
       </Flex>
       <Box p={4}>
         {messages.map((msg, index) => (
-          <Text key={index}>{msg}</Text>
+          <Text key={index}>
+            {msg.sender}: {msg.content}
+          </Text>
         ))}
       </Box>
       <form onSubmit={handleSubmit}>
@@ -53,7 +62,7 @@ const Chat = () => {
               onChange={handleMessageChange}
             />
             <InputRightElement width="4.5rem">
-              <Button h="1.75rem" size="sm" type="submit">
+              <Button h="1.75rem" size="sm" type="submit" isLoading={isLoading}>
                 Send
               </Button>
             </InputRightElement>
@@ -62,6 +71,4 @@ const Chat = () => {
       </form>
     </Box>
   );
-};
-
-export default Chat;
+}

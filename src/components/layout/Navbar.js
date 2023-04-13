@@ -47,7 +47,7 @@
 // export default Navbar
 
 
-import { Button, Flex, Link, extendTheme, useColorMode, IconButton } from "@chakra-ui/react";
+import { Button, Flex, Link, extendTheme, useColorMode, IconButton, Box, Stack, Code } from "@chakra-ui/react";
 import { HOME } from "../../lib/routes";
 import { FORUM } from "../../lib/routes";
 import { CHATROOM } from "../../lib/routes";
@@ -58,11 +58,37 @@ import { useLogout } from "../../hooks/auth";
 import { useLogin } from "../../hooks/auth";
 import Login from "../auth/Login";
 
+import { useAuth } from "../../hooks/auth";
+import { PROTECTED, USER } from "../../lib/routes";
+
+import Avatar from "../pages/profile/Avatar";
+
 import { CiDark } from "react-icons/ci";
+
+// function ActiveUser() {
+//   const { user, isLoading } = useAuth();
+
+//   if (isLoading) return "Loading...";
+
+//   return (
+//     <Stack align="center" spacing="5" my="8">
+//       <Avatar user={user} />
+//       <Code>@{user.username}</Code>
+//       <Button
+//         colorScheme="teal"
+//         w="full"
+//         as={Link}
+//         to={`${PROTECTED}/profile/${user.id}`}
+//       >
+//         Edit Profile
+//       </Button>
+//     </Stack>
+//   );
+// }
 
 export default function Navbar() {
   const { logout, isLoading } = useLogout();
-  
+  const { user } = useAuth();
 
   const config = {
     initialColorMode: 'light',
@@ -80,7 +106,7 @@ export default function Navbar() {
       borderTopColor="blackAlpha"
       height="20"
       zIndex="3"
-      justifyContent="center"
+      justifyContent="space-between"
 
       bgGradient='linear(to-r, green.200, pink.500)'
     >
@@ -100,9 +126,13 @@ export default function Navbar() {
         </Link>
 
         <Flex px="4" w="full" align="center" maxW="100px"></Flex>
-        <Link color="blackAlpha" as={RouterLink} to={PROFILE} fontWeight="bold">
-          Profile
-        </Link>
+        {user && (
+  <Link color="blackAlpha" as={RouterLink} to={`${PROTECTED}/profile/${user.id}`} fontWeight="bold">
+    Profile
+  </Link>
+)}
+   
+
         <Button
           ml="auto"
           colorScheme="blackAlpha"
@@ -112,24 +142,16 @@ export default function Navbar() {
         >
           Logout
         </Button>
-        <IconButton 
-        icon={< CiDark />}
-        variant="ghost"
-        onClick={toggleColorMode}>
-        {colorMode === 'light' ? 'Dark' : 'Light'}
-         
-
-      </IconButton>
-        {/* <Button
-          ml="auto"
-          colorScheme="blackAlpha"
-          size="sm"
-          onClick={Login}
-          isLoading={isLoading}
-        >
-          Login
-        </Button> */}
+        <Flex ml="auto" align="center"> 
+          <IconButton 
+            icon={<CiDark />}
+            variant="ghost"
+            onClick={toggleColorMode}
+          >
+            {colorMode === 'light' ? 'Dark' : 'Light'}
+          </IconButton>
       </Flex>
+    </Flex>
     </Flex>
   );
   
