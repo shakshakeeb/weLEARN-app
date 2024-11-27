@@ -11,30 +11,55 @@ import {
 } from "@chakra-ui/react";
 import { useAddMessage } from "../../../hooks/chats";
 import { useAuth } from "../../../hooks/auth";
+import { v4 as uuidv4 } from "uuid";
 
 export default function Chatroom() {
-  
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
-  const [senderName, setSenderName] = useState("");
+
   const { addMessage, isLoading } = useAddMessage();
-  const { user, isLoading: authLoading } = useAuth(); //current user object
-  
+  const { user, isLoading: authLoading, error } = useAuth(); // Get the current user
+
+  // Display a loading screen while authentication is in progress
+  if (authLoading) {
+    return <Text>Loading authentication...</Text>;
+  }
+
+  // If there is no authenticated user, display an error message
+  if (!user) {
+    return (
+      <Box w="100%" h="100%" bg="gray.100" margin="20px">
+        <Flex justify="center" align="center" h="10vh" bg="red.300" color="white">
+          <Heading as="h1" size="xl">
+            Please log in to access the chatroom.
+          </Heading>
+        </Flex>
+      </Box>
+    );
+  }
 
   const handleMessageChange = (event) => {
     setMessage(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (message.trim() === "") return;
-    const newMessage = { content: message, sender: senderName };
-    addMessage(newMessage)
-      .then(() => {
-        setMessages([...messages, newMessage]);
-        setMessage("");
-      })
-      .catch((error) => console.error(error));
+
+    const messageID = uuidv4(); // Generate a unique ID for the message
+    const newMessage = {
+      text: { text: message },
+      messageID,
+      uid: user.id,
+    };
+
+    try {
+      await addMessage(newMessage);
+      setMessages([...messages, { sender: user.username, content: message }]);
+      setMessage(""); // Clear the input field
+    } catch (error) {
+      console.error("Error adding message:", error);
+    }
   };
 
   return (

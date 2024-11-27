@@ -1,6 +1,6 @@
-import { SimpleGrid } from "@chakra-ui/react";
-import { useUsers } from "../../hooks/users";
-import User from "./User";
+// import { SimpleGrid } from "@chakra-ui/react";
+// import { useUsers } from "../../hooks/users";
+// import User from "./User";
 
 // export default function Users() {
 //   const { users, isLoading } = useUsers();

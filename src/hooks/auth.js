@@ -13,28 +13,63 @@ import {
   import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
   
-export function useAuth() {
-  const [authUser, authLoading, error] = useAuthState(auth); // Custom hook `useAuthState` is called with `auth` as an argument and returns `authUser`, `authLoading`, and `error` values.
-  const [isLoading, setLoading] = useState(true); // State hook to track loading status, initialized to `true`.
-  const [user, setUser] = useState(null); // State hook to store user data, initialized to `null`.
-
-  useEffect(() => {
-    async function fetchData() {
-      setLoading(true); // Set loading status to `true` before fetching data.
-      const ref = doc(db, "users", authUser.uid); // Create a reference to a document in Firestore using `db` and `authUser.uid`.
-      const docSnap = await getDoc(ref); // Fetch the document snapshot from Firestore.
-      setUser(docSnap.data()); // Set the user data from the document snapshot.
-      setLoading(false); // Set loading status to `false` after fetching data.
-    }
-
-    if (!authLoading) {
-      if (authUser) fetchData(); // If `authLoading` is `false` and `authUser` exists, fetch user data.
-      else setLoading(false); // If not signed in, set loading status to `false`.
-    }
-  }, [authLoading]); // Only run this effect when `authLoading` changes.
-
-  return { user, isLoading, error }; // Return the `user` data, `isLoading` status, and `error` value as an object.
-}
+  export function useAuth() {
+    const [authUser, authLoading, error] = useAuthState(auth);
+    const [isLoading, setLoading] = useState(true);
+    const [user, setUser] = useState(null);
+  
+    useEffect(() => {
+      async function fetchData() {
+        console.log("Fetching user data...");
+        if (authUser) {
+          console.log("Authenticated user:", authUser);
+  
+          try {
+            const ref = doc(db, "users", authUser.uid);
+            const docSnap = await getDoc(ref);
+  
+            if (docSnap.exists()) {
+              console.log("Firestore user document found:", docSnap.data());
+              setUser(docSnap.data()); // Use Firestore data if available
+            } else {
+              console.warn("User document does not exist in Firestore. Using auth data.");
+              setUser({
+                uid: authUser.uid,
+                email: authUser.email,
+                displayName: authUser.displayName || "Anonymous",
+              }); // Fallback to auth data
+            }
+          } catch (fetchError) {
+            console.error("Error fetching user data from Firestore:", fetchError);
+            setUser({
+              uid: authUser.uid,
+              email: authUser.email,
+              displayName: authUser.displayName || "Anonymous",
+            }); // Fallback to auth data in case of error
+          }
+        } else {
+          console.log("No authenticated user.");
+          setUser(null); // No authenticated user
+        }
+        setLoading(false); // Finish loading after fetching or failing
+        console.log("Fetching complete. isLoading set to false.");
+      }
+  
+      if (!authLoading) {
+        console.log("Auth loading complete. Proceeding to fetch Firestore data.");
+        fetchData(); // Fetch Firestore data only after authLoading completes
+      } else {
+        console.log("Auth still loading...");
+      }
+    }, [authLoading, authUser]);
+  
+    // Debugging outputs for the hook
+    console.log("Auth Hook - user:", user);
+    console.log("Auth Hook - isLoading:", isLoading);
+    console.log("Auth Hook - error:", error);
+  
+    return { user, isLoading, error };
+  }
 
   
 
