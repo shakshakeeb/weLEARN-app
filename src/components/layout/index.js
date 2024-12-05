@@ -1,11 +1,12 @@
-import { LOGIN, USER } from "../../lib/routes";
+import { LOGIN} from "../../lib/routes";
 import { useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { Box, Flex, Button } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import Navbar from "../../components/layout/Navbar";
 import { useAuth } from "../../hooks/auth"
-import { Link } from "react-router-dom";
-
+//import { Link } from "react-router-dom";
+//import {Button } from "@chakra-ui/react";
+//import { USER } from "../../lib/routes";
 
 export default function Layout() {
     const { pathname } = useLocation()

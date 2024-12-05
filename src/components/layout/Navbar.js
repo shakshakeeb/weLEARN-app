@@ -47,21 +47,23 @@
 // export default Navbar
 
 
-import { Button, Flex, Link, extendTheme, useColorMode, IconButton, Box, Stack, Code } from "@chakra-ui/react";
+import { Button, Flex, Link, useColorMode, IconButton } from "@chakra-ui/react";
 import { HOME } from "../../lib/routes";
 import { FORUM } from "../../lib/routes";
 import { CHATROOM } from "../../lib/routes";
-import { PROFILE } from "../../lib/routes";
+//import { PROFILE } from "../../lib/routes";
+///import {  Box, Stack, Code } from "@chakra-ui/react";
 
 import { Link as RouterLink } from "react-router-dom";
 import { useLogout } from "../../hooks/auth";
-import { useLogin } from "../../hooks/auth";
-import Login from "../auth/Login";
+//import { useLogin } from "../../hooks/auth";
+//import Login from "../auth/Login";
 
 import { useAuth } from "../../hooks/auth";
-import { PROTECTED, USER } from "../../lib/routes";
+import { PROTECTED } from "../../lib/routes";
+//import { USER } from "../../lib/routes";
 
-import Avatar from "../pages/profile/Avatar";
+//import Avatar from "../pages/profile/Avatar";
 
 import { CiDark } from "react-icons/ci";
 
@@ -90,12 +92,12 @@ export default function Navbar() {
   const { logout, isLoading } = useLogout();
   const { user } = useAuth();
 
-  const config = {
-    initialColorMode: 'light',
-    useSystemColorMode: false,
-  }
+  // const config = {
+  //   initialColorMode: 'light',
+  //   useSystemColorMode: false,
+  // }
 
-  const theme = extendTheme({ config })
+  // const theme = extendTheme({ config })
 
   const { colorMode, toggleColorMode } = useColorMode()
   return (

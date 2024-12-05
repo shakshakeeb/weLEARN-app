@@ -239,29 +239,43 @@ export function useLogin() {
   
 // This function uses the Firebase SDK to handle user logout
 export function useLogout() {
-  // Get the signOut function from the Firebase auth API, as well as isLoading and error state
-  const [signOut, isLoading, error] = useSignOut(auth);
+  // Get the signOut function from the Firebase auth API, as well as isLoading state
+  // Note: Excluded 'error' since it's not being used
+  const [signOut, isLoading] = useSignOut(auth);
   
-  // Use the useToast and useNavigate hooks from the Chakra UI library
+  // Use the useToast and useNavigate hooks from Chakra UI and React Router
   const toast = useToast();
   const navigate = useNavigate();
   
   // Define an async logout function that calls signOut and shows a toast notification upon successful logout
   async function logout() {
-    if (await signOut()) {
+    try {
+      const success = await signOut();
+      if (success) {
+        // If signOut succeeds, show a success message and navigate to the login page
+        toast({
+          title: "Successfully logged out",
+          status: "success",
+          isClosable: true,
+          position: "top",
+          duration: 4000,
+        });
+        navigate(LOGIN || "/login"); // Include fallback route
+      } else {
+        // If signOut fails gracefully, show a failure toast
+        toast({
+          title: "Failed to log out",
+          status: "error",
+          isClosable: true,
+          position: "top",
+          duration: 4000,
+        });
+      }
+    } catch (err) {
+      // If an error occurs (e.g., network issues), catch and display an error toast
       toast({
-        title: "Successfully logged out",
-        status: "success",
-        isClosable: true,
-        position: "top",
-        duration: 4000,
-      });
-      navigate(LOGIN);
-    } else {
-      // If signOut fails, show an error message
-      // Note that this code path will not be reached if an error is thrown (e.g. due to network issues)
-      toast({
-        title: "Failed to log out",
+        title: "An unexpected error occurred during logout",
+        description: err.message || "Please try again later.",
         status: "error",
         isClosable: true,
         position: "top",

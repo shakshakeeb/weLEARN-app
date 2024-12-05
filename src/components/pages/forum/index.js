@@ -1,4 +1,4 @@
-import { Box, Button, Heading, HStack, Stack, Textarea, Container } from "@chakra-ui/react";
+import { Box, Button, Heading, Stack, Textarea, Container } from "@chakra-ui/react";
 import reactTextareaAutosize from "react-textarea-autosize";
 import { useForm } from "react-hook-form";
 import { useAddPost } from "../../../hooks/posts";
