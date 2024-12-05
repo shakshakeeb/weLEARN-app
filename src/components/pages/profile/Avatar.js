@@ -7,7 +7,7 @@ export default function Avatar({ user, size = "xl", overrideAvatar = null }) {
   if (!user) {
     return null; // return null or a placeholder image if user is not defined
   }
-  const { id, username } = user;
+  
   return (
     <ChakraAvatar
       as={Link}

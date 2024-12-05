@@ -1,11 +1,11 @@
 import { useCollectionData, useDocumentData } from 'react-firebase-hooks/firestore';
 import { db, storage } from "../lib/firebase";
 import { doc, query, collection, updateDoc } from "firebase/firestore";
-import { Box, Button, Code, Stack } from "@chakra-ui/react";
+//import { Box, Button, Code, Stack } from "@chakra-ui/react";
 import { useAuth } from "../hooks/auth";
-import { PROTECTED, USERS } from "../lib/routes";
-import { Link } from "react-router-dom";
-import Avatar from "../components/pages/profile/Avatar";
+//import { PROTECTED, USERS } from "../lib/routes";
+//import { Link } from "react-router-dom";
+//import Avatar from "../components/pages/profile/Avatar";
 import { useState } from 'react';
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 

@@ -1,7 +1,7 @@
 import { Box, Button, Flex, Text } from "@chakra-ui/react"
 import { useUser } from "../../hooks/users";
 import Avatar from "../pages/profile/Avatar";
-import { format, formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow } from "date-fns";
 import Travel from "../pages/profile/Travel";
 
 export default function Header({ uid, date }) {
