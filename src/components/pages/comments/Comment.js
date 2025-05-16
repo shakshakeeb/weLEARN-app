@@ -1,6 +1,5 @@
 import { Box, Text, Flex, IconButton } from "@chakra-ui/react";
 import Avatar from "../profile/Avatar";
-import { Toast } from "@chakra-ui/react";
 
 
 import { formatDistanceToNow } from "date-fns";

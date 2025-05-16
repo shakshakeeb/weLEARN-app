@@ -18,7 +18,7 @@ export default function Chatroom() {
   const [message, setMessage] = useState("");
 
   const { addMessage, isLoading } = useAddMessage();
-  const { user, isLoading: authLoading, error } = useAuth(); // Get the current user
+  const { user, isLoading: authLoading} = useAuth(); // Get the current user
 
   // Display a loading screen while authentication is in progress
   if (authLoading) {

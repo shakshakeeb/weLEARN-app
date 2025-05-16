@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { HStack, Stack, Text, Flex, Divider, Textarea, Button, Code, useDisclosure } from "@chakra-ui/react";
+import { Stack, Text, Flex, Divider, Textarea, Button, Code, useDisclosure } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import { usePosts } from "../../../hooks/posts";
 import { useUser } from "../../../hooks/users";
-import PostsLists from "../../post/PostsLists";
+//import PostsLists from "../../post/PostsLists";
 import Avatar from "../profile/Avatar";
-import User from "../../users/User";
+//import User from "../../users/User";
 import format from "date-fns/format";
 import { useAuth } from "../../../hooks/auth";
 import { useBio } from "../../../hooks/users";

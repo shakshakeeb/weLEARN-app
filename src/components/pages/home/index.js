@@ -3,9 +3,7 @@ import {
   Heading,
   Container,
   Text,
-  Button,
   Stack,
-  Icon,
 } from '@chakra-ui/react';
 export default function Home() {
   return (
