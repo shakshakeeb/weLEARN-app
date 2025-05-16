@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import Register from "../components/auth/Register";
 import Login from "../components/auth/Login";
 import Layout from "../components/layout";
@@ -6,7 +6,7 @@ import Home from "../components/pages/home/index";
 import Forum from "../components/pages/forum/index";
 import Chatroom from "../components/pages/chatroom/index";
 import Comments from "../components/pages/comments/index";
-import User from "../components/users/index";
+//import User from "../components/users/index";
 import Profile from "../components/pages/profile/index";
 
 
@@ -33,41 +33,22 @@ export const router = createBrowserRouter([
 
     // {path: ROOT, element: "Public Root" }, testttttting
 
-
-    
-
-
-    {path: LOGIN, element: <Login />},
-    {path: REGISTER, element: <Register />},
-
-    {
-        path: PROTECTED,
-        element: <Layout />,
-        children: [
-        {
-            path: HOME,
-            element: <Home />,
-        },
-        {
-            path: FORUM,
-            element: <Forum />,
-        },
-        {
-            path: CHATROOM,
-            element: <Chatroom />,
-        },
-        {
-            path: PROFILE,
-            element: <Profile />,
-        },
-        {
-            path: COMMENTS,
-            element: <Comments />,
-        },
-        // {
-        //     path: USER,
-        //     element: <User />,
-        //   },
+  {
+    path: "/",
+    element: <Navigate to="/login" replace />,
+  },
+  { path: LOGIN, element: <Login /> },
+  { path: REGISTER, element: <Register /> },
+  {
+    path: PROTECTED,
+    element: <Layout />,
+    children: [
+      { path: HOME, element: <Home /> },
+      { path: FORUM, element: <Forum /> },
+      { path: CHATROOM, element: <Chatroom /> },
+      { path: PROFILE, element: <Profile /> },
+      { path: COMMENTS, element: <Comments /> },
+      // { path: USER, element: <User /> },
     ],
- }, 
+  },
 ]);
